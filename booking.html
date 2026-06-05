@@ -10,59 +10,108 @@
       theme: {
         extend: {
           colors: {
-            brand: { 400:'#4ade80', 500:'#22c55e', 600:'#16a34a', 700:'#15803d', 900:'#14532d' },
+            brand:  { 50:'#f0f7f3', 100:'#d9ede1', 200:'#b3dbca', 300:'#7fbfaa', 400:'#4A9E7E', 500:'#3D7A5F', 600:'#2F5E48', 700:'#244A38', 800:'#1A3629', 900:'#0F201A' },
+            night:  { 100:'#ede9f5', 400:'#8B79C7', 500:'#7B68AE', 600:'#6657A0' },
+            warm:   { 50:'#FDFAF5', 100:'#F8F3EB', 200:'#EDE4D4', 300:'#DDD0BA', 400:'#B8A58A', 500:'#8B6F47', 600:'#6B5337' },
           },
-          fontFamily: { sans: ['"Inter"','"Noto Sans TC"','sans-serif'] },
+          fontFamily: {
+            sans:  ['"Noto Sans TC"', 'sans-serif'],
+            serif: ['"Noto Serif TC"', 'serif'],
+          },
         },
       },
     };
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    body { background-color: #0f172a; }
-    .hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(34,197,94,.18) 0%, transparent 70%); }
-    .card-glow  { border:1px solid rgba(34,197,94,.12); background:linear-gradient(135deg,rgba(30,41,59,.95),rgba(15,23,42,.98)); }
+    body { background-color: #F8F3EB; }
 
-    /* 時段按鈕 */
+    /* ── 卡片 ── */
+    .card-warm {
+      background: #FFFFFF;
+      border: 1px solid #E8DFD0;
+      box-shadow: 0 2px 12px rgba(90,65,40,.06);
+    }
+
+    /* ── 時段按鈕 ── */
     .slot-btn { transition: all .15s; }
-    .slot-btn.day-slot   { border-color: #475569; }
-    .slot-btn.night-slot { border-color: #6d28d9; background:rgba(109,40,217,.08); }
-    .slot-btn.selected.day-slot   { background:linear-gradient(135deg,#16a34a,#15803d); border-color:#4ade80; color:#fff; box-shadow:0 0 16px rgba(34,197,94,.4); }
-    .slot-btn.selected.night-slot { background:linear-gradient(135deg,#4f46e5,#3730a3); border-color:#818cf8; color:#fff; box-shadow:0 0 16px rgba(79,70,229,.4); }
-    .slot-btn:not(.selected):not(:disabled):hover { border-color:#4ade80; background:rgba(34,197,94,.08); }
-    .slot-btn:disabled { opacity:.32; cursor:not-allowed; }
+    .slot-btn.day-slot   { border-color: #C8B89A; color: #6B5337; background: #FDFAF5; }
+    .slot-btn.night-slot { border-color: #C5BAE0; color: #6657A0; background: #F5F2FC; }
+    .slot-btn.selected.day-slot   { background: #3D7A5F; border-color: #3d767a; color: #fff; box-shadow: 0 2px 10px rgba(61,122,95,.25); }
+    .slot-btn.selected.night-slot { background: #7B68AE; border-color: #7B68AE; color: #fff; box-shadow: 0 2px 10px rgba(123,104,174,.25); }
+    .slot-btn:not(.selected):not(:disabled):hover.day-slot   { border-color: #3D7A5F; background: #f0f7f3; }
+    .slot-btn:not(.selected):not(:disabled):hover.night-slot { border-color: #7B68AE; background: #ede9f5; }
+    .slot-btn:not(.selected):not(:disabled):hover { border-color: #3D7A5F; background: #f0f7f3; }
+    .slot-btn:disabled { opacity:.35; cursor:not-allowed; }
 
-    /* 方案卡片 */
+    /* ── 方案卡片 ── */
     .plan-card { cursor:pointer; transition:all .15s; }
-    .plan-card.selected { border-color:#22c55e !important; background:rgba(20,83,45,.25) !important; box-shadow:0 0 0 1px rgba(34,197,94,.35); }
+    .plan-card.selected { border-color: #2d6065 !important; background: #f0f7f3 !important; box-shadow: 0 0 0 1px rgba(61,122,95,.2); }
 
-    /* 人數卡片 */
+    /* ── 人數卡片 ── */
     .size-card { cursor:pointer; transition:all .15s; }
-    .size-card.selected { border-color:#22c55e !important; background:rgba(20,83,45,.25) !important; }
+    .size-card.selected { border-color: #2d6065 !important; background: #f0f7f3 !important; }
 
-    /* 輸入框 */
-    .form-input { transition:border-color .15s, box-shadow .15s; }
-    .form-input:focus { outline:none; border-color:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,.18); }
+    /* ── 輸入框 ── */
+    .form-input { transition: border-color .15s, box-shadow .15s; }
+    .form-input:focus { outline: none; border-color: #2d6065; box-shadow: 0 0 0 3px rgba(61,122,95,.12); }
 
-    /* Modal */
-    #modal-overlay { transition:opacity .2s; }
-    #modal-box     { transition:transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s; }
-    #modal-overlay.hidden { display:none; }
+    /* ── Modal ── */
+    #modal-overlay { transition: opacity .2s; }
+    #modal-box     { transition: transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s; }
+    #modal-overlay.hidden { display: none; }
 
-    /* Date picker */
-    input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(.6) sepia(1) saturate(3) hue-rotate(90deg); cursor:pointer; }
+    /* ── Date picker ── */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(.3) sepia(.5) saturate(2) hue-rotate(100deg);
+      cursor: pointer;
+    }
 
-    /* Spinner */
-    @keyframes spin { to { transform:rotate(360deg); } }
-    .animate-spin { animation:spin 1s linear infinite; }
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .animate-spin { animation: spin 1s linear infinite; }
 
-    /* Badge pulse */
+    /* ── Badge pulse ── */
     @keyframes badge-pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
-    .badge-pulse { animation:badge-pulse 2.2s ease-in-out infinite; }
+    .badge-pulse { animation: badge-pulse 2.2s ease-in-out infinite; }
+
+    /* ── Addon checkbox ── */
+    .addon-check { accent-color: #2d6065; }
+
+    /* ── Section heading ── */
+    .section-heading {
+      font-family: 'Noto Serif TC', serif;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #4A3728;
+    }
+    .field-label {
+      display: block;
+      font-size: .7rem;
+      font-weight: 500;
+      color: #8B7155;
+      margin-bottom: .35rem;
+    }
+
+    /* ── 裝飾線 ── */
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem; height: 1.5rem;
+      background: #3D7A5F;
+      color: #fff;
+      border-radius: 50%;
+      font-size: .65rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-right: .5rem;
+    }
   </style>
 </head>
-<body class="font-sans text-slate-100 min-h-screen">
+<body class="font-sans text-warm-600 min-h-screen">
 
 <!-- ═══════════════════════════════════════════════════════════════════
      ██  CONFIG — 只需修改此物件，即可快速客製化不同教練的預約頁面  ██
@@ -75,7 +124,7 @@ const CONFIG = {
     name:        '龍哥',
     lineUserId:        'Uc1d06eefb380958f95c29db0a45e3365',  // 教練 LINE User ID
     developerLineUserId: 'Uc1d06eefb380958f95c29db0a45e3365', // ← 填入你自己的 LINE User ID（目前先填同一個測試）
-    avatar:      'https://ui-avatars.com/api/?name=龍哥&background=15803d&color=fff&size=160&bold=true',
+    avatar:      'https://ui-avatars.com/api/?name=龍哥&background=3D7A5F&color=fff&size=160&bold=true',
     title:       '龍羽球俱樂部 主教練',
     bio:         '專注雙打戰術訓練，課程從入門到進階皆有開設，依學員程度量身規劃，一起在球場上享受羽球的樂趣。',
     tags:        ['雙打戰術'],
@@ -110,20 +159,19 @@ const CONFIG = {
   pricing: {
     '1on1': { trial: 700, single: 800,  ten: 7500  },
     '1on2': {
-      // 逐時段判斷：日間 / 夜間
       byFee: {
         370: { trial: 540, single: 600, ten: 5700 },
         570: { trial: 640, single: 685, ten: 6550 },
       },
     },
-    '1on4': { trial: 600, single: 600, ten: 6000 }, // 固定價格/人
+    '1on4': { trial: 600, single: 600, ten: 6000 },
   },
 
   /* ── 課程方案 ── */
   plans: [
-    { id:'trial',  label:'🔹 體驗課',    note:'' },
-    { id:'single', label:'🔹 單堂課',    note:'' },
-    { id:'ten',    label:'🔹 10 堂方案', note:'10 堂方案價格依本次選擇的每堂時數計算' },
+    { id:'trial',  label:'體驗課',    note:'' },
+    { id:'single', label:'單堂課',    note:'' },
+    { id:'ten',    label:'10 堂方案', note:'10 堂方案價格依本次選擇的每堂時數計算' },
   ],
 
   /* ── 球館選項 ── */
@@ -153,31 +201,34 @@ const CONFIG = {
 </script>
 
 <!-- ──── NAVBAR ──── -->
-<nav class="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-[#0f172a]/80 border-b border-slate-800">
+<nav class="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-[#F8F3EB]/90 border-b border-warm-200">
   <div class="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
     <div class="flex items-center gap-2">
       <svg class="w-5 h-5 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
       </svg>
-      <span class="text-sm font-semibold text-slate-200">羽球預約</span>
+      <span class="font-serif text-sm font-semibold text-warm-600">羽球預約</span>
     </div>
-    <a href="#step-date" class="text-xs font-semibold px-4 py-1.5 rounded-full bg-brand-600 hover:bg-brand-500 text-white transition-colors">立即預約</a>
+    <a href="#step-date"
+       class="text-xs font-semibold px-4 py-1.5 rounded-full bg-brand-500 hover:bg-brand-600 text-white transition-colors shadow-sm">
+      立即預約
+    </a>
   </div>
 </nav>
 
 <!-- ──── 教練品牌區 ──── -->
-<section class="hero-glow pt-24 pb-8 px-4">
+<section class="pt-24 pb-8 px-4">
   <div class="max-w-2xl mx-auto">
-    <div class="card-glow rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row gap-5 items-center sm:items-start">
+    <div class="card-warm rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row gap-5 items-center sm:items-start">
       <div class="relative flex-shrink-0">
         <img id="coach-avatar" src="" alt="教練頭像"
-             class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover ring-2 ring-brand-600 ring-offset-2 ring-offset-[#1e293b]" />
-        <span class="badge-pulse absolute -bottom-1 -right-1 bg-brand-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">招生中</span>
+             class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover ring-2 ring-brand-300 ring-offset-2 ring-offset-white" />
+        <span class="badge-pulse absolute -bottom-1 -right-1 bg-brand-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">招生中</span>
       </div>
       <div class="flex-1 text-center sm:text-left">
         <p id="coach-title" class="text-[10px] font-semibold text-brand-400 tracking-widest uppercase mb-1"></p>
-        <h1 id="coach-name" class="text-2xl sm:text-3xl font-bold text-white mb-2"></h1>
-        <p id="coach-bio"  class="text-sm text-slate-400 leading-relaxed mb-3 max-w-lg"></p>
+        <h1 id="coach-name" class="font-serif text-2xl sm:text-3xl font-bold text-warm-600 mb-2"></h1>
+        <p id="coach-bio"  class="text-sm text-warm-400 leading-relaxed mb-3 max-w-lg"></p>
         <div id="coach-tags" class="flex flex-wrap gap-2 justify-center sm:justify-start"></div>
       </div>
     </div>
@@ -186,49 +237,53 @@ const CONFIG = {
 
 <!-- ──── 預約表單 ──── -->
 <main class="px-4 pb-16">
-  <div class="max-w-2xl mx-auto space-y-5">
+  <div class="max-w-2xl mx-auto space-y-4">
 
     <!-- STEP 1: 基本資訊 -->
-    <div class="card-glow rounded-2xl p-6">
-      <h2 class="section-heading">1. 基本資訊</h2>
+    <div class="card-warm rounded-2xl p-6">
+      <h2 class="section-heading flex items-center"><span class="step-number">1</span>基本資訊</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
         <div>
           <label class="field-label">姓名 <span class="text-red-400">*</span></label>
           <input id="input-name" type="text" placeholder="請輸入姓名"
-                 class="form-input w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500" />
+                 class="form-input w-full bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600 placeholder-warm-300" />
         </div>
         <div>
           <label class="field-label">手機 <span class="text-red-400">*</span></label>
           <input id="input-phone" type="tel" placeholder="09xxxxxxxx" maxlength="10"
-                 class="form-input w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500" />
+                 class="form-input w-full bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600 placeholder-warm-300" />
           <p id="phone-error" class="hidden text-xs text-red-400 mt-1">請輸入 09 開頭的 10 碼手機號碼</p>
         </div>
         <div class="sm:col-span-2">
           <label class="field-label">LINE ID <span class="text-red-400">*</span></label>
           <input id="input-line" type="text" placeholder="請輸入 LINE ID"
-                 class="form-input w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500" />
+                 class="form-input w-full bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600 placeholder-warm-300" />
         </div>
       </div>
     </div>
 
     <!-- STEP 2: 預約人數 -->
-    <div class="card-glow rounded-2xl p-6">
-      <h2 class="section-heading">2. 預約人數</h2>
+    <div class="card-warm rounded-2xl p-6">
+      <h2 class="section-heading flex items-center"><span class="step-number">2</span>預約人數</h2>
       <div id="size-grid" class="grid grid-cols-3 gap-2 mt-4"></div>
     </div>
 
     <!-- STEP 3: 日期與時段 -->
-    <div id="step-date" class="card-glow rounded-2xl p-6 scroll-mt-16">
-      <h2 class="section-heading">3. 日期與時段</h2>
-      <p id="team-note" class="hidden text-xs text-amber-400 mt-1">⚠ 4 人團班請選連續 2 個時段</p>
+    <div id="step-date" class="card-warm rounded-2xl p-6 scroll-mt-16">
+      <h2 class="section-heading flex items-center"><span class="step-number">3</span>日期與時段</h2>
+      <p id="team-note" class="hidden text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-2">⚠ 4 人團班請選連續 2 個時段</p>
       <div class="mt-4 space-y-4">
         <input id="input-date" type="date"
-               class="form-input w-full sm:w-auto bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white" />
+               class="form-input w-full sm:w-auto bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600" />
 
         <!-- 圖例 -->
-        <div class="flex gap-4 text-[10px] text-slate-500">
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-brand-700/60 border border-brand-600/50 inline-block"></span>日間場</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-indigo-800/60 border border-indigo-500/50 inline-block"></span>夜間場</span>
+        <div class="flex gap-4 text-[10px] text-warm-400">
+          <span class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded bg-warm-100 border border-warm-300 inline-block"></span>日間場
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded bg-night-100 border border-night-400/40 inline-block"></span>夜間場
+          </span>
         </div>
 
         <div id="slots-grid" class="grid grid-cols-4 sm:grid-cols-7 gap-2"></div>
@@ -236,51 +291,50 @@ const CONFIG = {
     </div>
 
     <!-- STEP 4: 課程方案 -->
-    <div class="card-glow rounded-2xl p-6">
-      <h2 class="section-heading">4. 課程方案 <span class="text-[10px] text-slate-500 font-normal normal-case">（含場地費 / 人）</span></h2>
+    <div class="card-warm rounded-2xl p-6">
+      <h2 class="section-heading flex items-center">
+        <span class="step-number">4</span>課程方案
+        <span class="text-[10px] text-warm-400 font-normal normal-case ml-1">（含場地費 / 人）</span>
+      </h2>
       <div id="plans-list" class="mt-4 space-y-2"></div>
     </div>
 
     <!-- STEP 5: 球館 & 附加服務 -->
-    <div class="card-glow rounded-2xl p-6">
-      <h2 class="section-heading">5. 球館 & 附加服務</h2>
+    <div class="card-warm rounded-2xl p-6">
+      <h2 class="section-heading flex items-center"><span class="step-number">5</span>球館 &amp; 附加服務</h2>
       <div class="mt-4 space-y-4">
 
-        <!-- 球館選擇 -->
         <div>
           <label class="field-label">練球地區 / 球館 <span class="text-red-400">*</span></label>
           <select id="input-venue"
-                  class="form-input w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white">
+                  class="form-input w-full bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600 appearance-none">
             <option value="" disabled selected>請選擇球館</option>
           </select>
         </div>
 
-        <!-- 其他球館輸入 -->
         <div id="venue-other-wrap" class="hidden">
           <label class="field-label">請輸入球館名稱</label>
           <input id="input-venue-other" type="text" placeholder="例如：文山羽球館"
-                 class="form-input w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500" />
+                 class="form-input w-full bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600 placeholder-warm-300" />
         </div>
 
-        <!-- 附加服務 -->
         <div>
           <label class="field-label">附加服務（選填）</label>
           <div id="addons-grid" class="grid grid-cols-2 gap-2 mt-1"></div>
         </div>
 
-        <!-- 備註 -->
         <div>
           <label class="field-label">備註（選填）</label>
           <textarea id="input-note" rows="2" placeholder="如有其他特殊需求請填寫..."
-                    class="form-input w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 resize-none"></textarea>
+                    class="form-input w-full bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600 placeholder-warm-300 resize-none"></textarea>
         </div>
       </div>
     </div>
 
     <!-- 確認預約按鈕 -->
-    <p class="text-[10px] text-slate-500 text-center">※ 最早可預約日期為隔天</p>
+    <p class="text-[10px] text-warm-400 text-center">※ 最早可預約日期為隔天</p>
     <button id="btn-book"
-            class="w-full py-4 rounded-2xl bg-brand-600 hover:bg-brand-500 active:scale-[.98] text-white font-bold text-sm transition-all shadow-xl shadow-brand-900/30">
+            class="w-full py-4 rounded-2xl bg-brand-500 hover:bg-brand-600 active:scale-[.98] text-white font-bold text-sm transition-all shadow-lg shadow-brand-200">
       確認預約 →
     </button>
 
@@ -291,13 +345,13 @@ const CONFIG = {
      MODAL — 付款確認
      ════════════════════════════ -->
 <div id="modal-overlay"
-     class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+     class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
   <div id="modal-box"
-       class="w-full max-w-md card-glow rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+       class="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-warm-200">
 
     <div class="flex items-center justify-between mb-5">
-      <h3 class="text-base font-bold text-white">預約確認</h3>
-      <button id="modal-close" class="text-slate-500 hover:text-white transition-colors">
+      <h3 class="font-serif text-base font-bold text-warm-600">預約確認</h3>
+      <button id="modal-close" class="text-warm-300 hover:text-warm-500 transition-colors">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
         </svg>
@@ -305,42 +359,31 @@ const CONFIG = {
     </div>
 
     <!-- 摘要 -->
-    <div class="bg-slate-800/60 rounded-xl p-4 mb-4 space-y-2 text-sm">
-      <div class="flex justify-between"><span class="text-slate-400">學員</span><span id="modal-name" class="font-medium text-white"></span></div>
-      <div class="flex justify-between"><span class="text-slate-400">人數</span><span id="modal-size" class="font-medium text-white"></span></div>
-      <div class="flex justify-between"><span class="text-slate-400">日期時段</span><span id="modal-datetime" class="font-medium text-white text-right max-w-[60%]"></span></div>
-      <div class="flex justify-between"><span class="text-slate-400">方案</span><span id="modal-plan" class="font-medium text-white"></span></div>
-      <div class="border-t border-slate-700 pt-2 flex justify-between">
-        <span class="text-slate-300 font-semibold">應付金額</span>
-        <span id="modal-price" class="text-brand-400 font-bold text-base"></span>
+    <div class="bg-warm-50 rounded-xl p-4 mb-4 space-y-2 text-sm border border-warm-200">
+      <div class="flex justify-between"><span class="text-warm-400">學員</span><span id="modal-name" class="font-medium text-warm-600"></span></div>
+      <div class="flex justify-between"><span class="text-warm-400">人數</span><span id="modal-size" class="font-medium text-warm-600"></span></div>
+      <div class="flex justify-between"><span class="text-warm-400">日期時段</span><span id="modal-datetime" class="font-medium text-warm-600 text-right max-w-[60%]"></span></div>
+      <div class="flex justify-between"><span class="text-warm-400">方案</span><span id="modal-plan" class="font-medium text-warm-600"></span></div>
+      <div class="border-t border-warm-200 pt-2 flex justify-between">
+        <span class="text-warm-500 font-semibold">應付金額</span>
+        <span id="modal-price" class="text-brand-500 font-bold text-base"></span>
       </div>
     </div>
 
-    <!-- 付款功能預留區（未來啟用）-->
-    <!-- <div id="payment-section"></div> -->
-
     <button id="btn-submit"
-            class="w-full py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 active:scale-[.98] text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+            class="w-full py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 active:scale-[.98] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm">
       <span id="btn-submit-text">送出預約</span>
     </button>
 
     <!-- 成功 -->
     <div id="modal-success" class="hidden mt-5 text-center space-y-2">
       <div class="text-4xl">🏸</div>
-      <p class="text-brand-400 font-bold">預約已送出！</p>
-      <p class="text-xs text-slate-400">教練會盡快與您聯絡，感謝您的預約。</p>
+      <p class="text-brand-500 font-bold font-serif">預約已送出！</p>
+      <p class="text-xs text-warm-400">教練會盡快與您聯絡，感謝您的預約。</p>
     </div>
 
   </div>
 </div>
-
-<!-- ════════════════════════
-     共用 CSS class helpers
-     ════════════════════════ -->
-<style>
-  .section-heading { font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#94a3b8; }
-  .field-label      { display:block; font-size:.7rem; font-weight:500; color:#94a3b8; margin-bottom:.35rem; }
-</style>
 
 <!-- ════════════════════════
      JAVASCRIPT
@@ -348,7 +391,7 @@ const CONFIG = {
 <script>
 /* ═══════════ 狀態 ═══════════ */
 let selectedSize    = CONFIG.groupSizes[0].id;
-let selectedSlots   = [];           // slot value strings
+let selectedSlots   = [];
 let selectedPlanId  = CONFIG.plans[0].id;
 
 /* ═══════════ 教練資料渲染 ═══════════ */
@@ -361,7 +404,7 @@ let selectedPlanId  = CONFIG.plans[0].id;
   const tagsEl = document.getElementById('coach-tags');
   c.tags.forEach(t => {
     const s = document.createElement('span');
-    s.className   = 'text-xs px-2.5 py-1 rounded-full bg-brand-900/60 text-brand-400 border border-brand-700/40 font-medium';
+    s.className   = 'text-xs px-2.5 py-1 rounded-full bg-brand-50 text-brand-500 border border-brand-200 font-medium';
     s.textContent = t;
     tagsEl.appendChild(s);
   });
@@ -374,7 +417,9 @@ let selectedPlanId  = CONFIG.plans[0].id;
     const div = document.createElement('div');
     div.id        = `size-${sz.id}`;
     div.className = `size-card p-3 text-center rounded-xl border-2 text-xs font-bold transition-all
-                     ${sz.id === selectedSize ? 'border-brand-500 bg-brand-900/25 text-white' : 'border-slate-700 bg-slate-800/40 text-slate-300'}`;
+                     ${sz.id === selectedSize
+                       ? 'border-brand-500 bg-brand-50 text-brand-600'
+                       : 'border-warm-200 bg-warm-50 text-warm-500'}`;
     div.innerHTML = sz.label;
     div.addEventListener('click', () => setSize(sz.id));
     grid.appendChild(div);
@@ -385,10 +430,11 @@ function setSize(id) {
   selectedSize = id;
   CONFIG.groupSizes.forEach(sz => {
     const el = document.getElementById(`size-${sz.id}`);
-    el.className = el.className.replace(/border-brand-500 bg-brand-900\/25 text-white|border-slate-700 bg-slate-800\/40 text-slate-300/g, '').trim();
+    el.className = el.className
+      .replace(/border-brand-500 bg-brand-50 text-brand-600|border-warm-200 bg-warm-50 text-warm-500/g, '').trim();
     el.classList.add(...(sz.id === id
-      ? ['border-brand-500','bg-brand-900/25','text-white']
-      : ['border-slate-700','bg-slate-800/40','text-slate-300']));
+      ? ['border-brand-500','bg-brand-50','text-brand-600']
+      : ['border-warm-200','bg-warm-50','text-warm-500']));
   });
   document.getElementById('team-note').classList.toggle('hidden', id !== '1on4');
   selectedSlots = [];
@@ -409,7 +455,6 @@ function setSize(id) {
   inp.max   = fmt(max);
   inp.value = fmt(min);
   inp.addEventListener('change', onDateChange);
-  // 頁面載入時立即查詢預設日期的已預約時段
   setTimeout(onDateChange, 500);
 })();
 
@@ -423,7 +468,7 @@ function setSize(id) {
     btn.dataset.fee   = slot.fee;
     btn.dataset.idx   = CONFIG.slots.indexOf(slot);
     btn.className = `slot-btn text-[11px] font-bold py-2 px-1 rounded-lg border
-                     ${slot.night ? 'night-slot' : 'day-slot'} text-slate-300`;
+                     ${slot.night ? 'night-slot' : 'day-slot'}`;
     btn.textContent = slot.label;
     btn.addEventListener('click', () => toggleSlot(btn));
     grid.appendChild(btn);
@@ -442,15 +487,11 @@ function toggleSlot(btn) {
   const idx = parseInt(btn.dataset.idx);
 
   if (selectedSize === '1on4') {
-    // 4人團班：最多選 2 個連續時段
     if (selectedSlots.includes(val)) {
       selectedSlots = selectedSlots.filter(v => v !== val);
     } else {
-      if (selectedSlots.length >= 2) {
-        selectedSlots = [];
-      }
+      if (selectedSlots.length >= 2) selectedSlots = [];
       selectedSlots.push(val);
-      // 檢查連續性
       if (selectedSlots.length === 2) {
         const idxs = selectedSlots.map(v => {
           const s = CONFIG.slots.find(s => s.value === v);
@@ -463,7 +504,6 @@ function toggleSlot(btn) {
       }
     }
   } else {
-    // 其他：自由多選
     if (selectedSlots.includes(val)) {
       selectedSlots = selectedSlots.filter(v => v !== val);
     } else {
@@ -479,7 +519,6 @@ function onDateChange() {
   const date = document.getElementById('input-date').value;
   if (!date) return;
 
-  // 先重置所有時段
   document.querySelectorAll('.slot-btn').forEach(btn => {
     btn.disabled = false;
     const slot = CONFIG.slots.find(s => s.value === btn.dataset.value);
@@ -501,7 +540,7 @@ function onDateChange() {
       renderSlotStates();
       updatePricing();
     })
-    .catch(() => {/* 查詢失敗不影響前端操作 */});
+    .catch(() => {});
 }
 
 /* ═══════════ 方案渲染 & 定價計算 ═══════════ */
@@ -510,13 +549,13 @@ function onDateChange() {
   CONFIG.plans.forEach(plan => {
     const div = document.createElement('div');
     div.id        = `plan-${plan.id}`;
-    div.className = `plan-card p-4 rounded-xl border-2 border-slate-700 bg-slate-800/40 flex justify-between items-center`;
+    div.className = `plan-card p-4 rounded-xl border-2 border-warm-200 bg-warm-50 flex justify-between items-center`;
     div.innerHTML = `
       <div>
-        <p class="text-sm font-semibold text-white">${plan.label}</p>
-        ${plan.note ? `<p class="text-[10px] text-slate-500 mt-0.5">${plan.note}</p>` : ''}
+        <p class="text-sm font-semibold text-warm-600">${plan.label}</p>
+        ${plan.note ? `<p class="text-[10px] text-warm-400 mt-0.5">${plan.note}</p>` : ''}
       </div>
-      <span id="price-${plan.id}" class="text-brand-400 font-bold text-sm whitespace-nowrap ml-3">-- /人</span>
+      <span id="price-${plan.id}" class="text-brand-500 font-bold text-sm whitespace-nowrap ml-3">-- /人</span>
     `;
     div.addEventListener('click', () => selectPlan(plan.id));
     list.appendChild(div);
@@ -531,7 +570,7 @@ function selectPlan(id) {
     el.classList.toggle('selected', p.id === id);
     if (!el.classList.contains('selected')) {
       el.classList.remove('border-brand-500');
-      el.classList.add('border-slate-700');
+      el.classList.add('border-warm-200');
     }
   });
 }
@@ -569,7 +608,6 @@ function updatePricing() {
     return;
   }
 
-  // 1on1
   const p   = CONFIG.pricing['1on1'];
   const hrs = slots.length;
   const venueTotal = slots.reduce((sum, s) => sum + s.fee, 0);
@@ -603,10 +641,10 @@ function updatePricing() {
   const grid = document.getElementById('addons-grid');
   CONFIG.addons.forEach(a => {
     const label = document.createElement('label');
-    label.className = 'flex items-center gap-2 p-3 bg-slate-800/50 rounded-xl cursor-pointer border-2 border-transparent hover:border-slate-600 transition-all';
+    label.className = 'flex items-center gap-2 p-3 bg-warm-50 rounded-xl cursor-pointer border-2 border-transparent hover:border-warm-200 transition-all';
     label.innerHTML = `
-      <input type="checkbox" value="${a.value}" class="addon-check w-4 h-4 rounded accent-brand-600" />
-      <span class="text-xs font-semibold text-slate-300">${a.label}</span>
+      <input type="checkbox" value="${a.value}" class="addon-check w-4 h-4 rounded" />
+      <span class="text-xs font-semibold text-warm-500">${a.label}</span>
     `;
     grid.appendChild(label);
   });
@@ -637,18 +675,15 @@ document.getElementById('btn-book').addEventListener('click', () => {
     alert('請填寫球館名稱'); return;
   }
 
-  // 計算目前選中方案價格
   const planEl = document.getElementById(`price-${selectedPlanId}`);
   const priceText = planEl ? planEl.textContent : '--';
 
-  // 填入 Modal
   document.getElementById('modal-name').textContent     = name;
   document.getElementById('modal-size').textContent     = CONFIG.groupSizes.find(s => s.id === selectedSize).label;
   document.getElementById('modal-datetime').textContent = `${date}　${selectedSlots.join('、')}`;
   document.getElementById('modal-plan').textContent     = CONFIG.plans.find(p => p.id === selectedPlanId).label;
   document.getElementById('modal-price').textContent    = priceText;
 
-  // 重置 modal 狀態
   document.getElementById('modal-success').classList.add('hidden');
   document.getElementById('btn-submit').classList.remove('hidden');
   document.getElementById('btn-submit-text').textContent = '送出預約';
@@ -688,7 +723,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     venue:            venueVal === '其他' ? venueOther : venueVal,
     services:         addons,
     note:             document.getElementById('input-note').value.trim(),
-    transferLast5:    '',   // 付款功能尚未啟用
+    transferLast5:    '',
     coachName:           CONFIG.coach.name,
     coachLineUserId:     CONFIG.coach.lineUserId,
     developerLineUserId: CONFIG.coach.developerLineUserId,
@@ -702,14 +737,12 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   btnText.textContent = '資料傳送中…';
 
   try {
-    // GAS 不支援 CORS preflight，使用 no-cors 送出（無法讀取回應，但資料會正常到達）
     await fetch(CONFIG.apiUrl, {
       method: 'POST',
       mode:   'no-cors',
       body:   JSON.stringify(payload),
     });
 
-    // 送出後直接顯示成功
     btn.classList.add('hidden');
     document.getElementById('modal-success').classList.remove('hidden');
     setTimeout(() => {
