@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>龍羽球預約系統 | 讓教練專注教球</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+body{font-family:'Noto Sans TC',sans-serif;background:#0a0f1a;color:#e2e8f0}
+.grad-text{background:linear-gradient(135deg,#4ade80,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1.5rem}
+.btn-primary{background:linear-gradient(135deg,#16a34a,#0891b2);transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.feature-icon{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(8,145,178,.15));border:1px solid rgba(34,197,94,.2)}
+.price-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:1.5rem}
+.price-card.highlight{background:linear-gradient(135deg,rgba(22,163,74,.15),rgba(8,145,178,.12));border-color:rgba(34,197,94,.4)}
+.pain-card{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:1rem}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.float{animation:float 3s ease-in-out infinite}
+.glow{box-shadow:0 0 40px rgba(34,197,94,.15)}
+</style>
+</head>
+<body>
+<nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-lg bg-[#0a0f1a]/80 border-b border-white/5">
+<div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-2"><span class="text-2xl">🏸</span><span class="font-bold text-white text-sm">龍羽球預約系統</span></div>
+<a href="#pricing" class="btn-primary text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-lg">立即加入 →</a>
+</div>
+</nav>
+<section class="pt-40 pb-24 px-6 text-center">
+<div class="max-w-3xl mx-auto">
+<span class="inline-block text-xs font-bold px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 mb-6 tracking-widest uppercase">專為羽球教練設計</span>
+<h1 class="text-4xl sm:text-6xl font-black text-white leading-tight mb-6">不再用通訊軟體<br/><span class="grad-text">手動排課了</span></h1>
+<p class="text-slate-400 text-lg mb-10 max-w-xl mx-auto">學員線上預約、LINE 一鍵確認、Google 試算表自動記錄。你只需要到場教球，其他交給系統。</p>
+<div class="flex flex-col sm:flex-row gap-3 justify-center">
+<a href="#pricing" class="btn-primary text-white font-bold px-8 py-4 rounded-2xl text-base">🚀 立即加入平台</a>
+<a href="#features" class="text-slate-300 font-semibold px-8 py-4 rounded-2xl border border-white/10 text-base">了解功能 ↓</a>
+</div>
+</div>
+</section>
+<section class="py-20 px-6">
+<div class="max-w-4xl mx-auto">
+<h2 class="text-center text-3xl font-black text-white mb-4">這些困擾你熟悉嗎？</h2>
+<p class="text-center text-slate-500 mb-12">95% 的獨立教練都有這些問題</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="pain-card p-5 flex gap-4"><span class="text-2xl">😫</span><div><p class="font-bold text-white text-sm">LINE 訊息永遠找不到</p><p class="text-slate-500 text-xs mt-1">學員傳了幾十則訊息，預約時間全部要往上滑找，每天光確認就要半小時</p></div></div>
+<div class="pain-card p-5 flex gap-4"><span class="text-2xl">😤</span><div><p class="font-bold text-white text-sm">時段撞課問題</p><p class="text-slate-500 text-xs mt-1">同一時段被兩個學員預約，當場尷尬只能臨時取消，信譽受損</p></div></div>
+<div class="pain-card p-5 flex gap-4"><span class="text-2xl">📋</span><div><p class="font-bold text-white text-sm">手動登記耗時又出錯</p><p class="text-slate-500 text-xs mt-1">每筆預約還要自己抄在記事本，一旦漏記就是問題</p></div></div>
+<div class="pain-card p-5 flex gap-4"><span class="text-2xl">💸</span><div><p class="font-bold text-white text-sm">金流管理一團亂</p><p class="text-slate-500 text-xs mt-1">誰付了誰沒付根本不清楚，每次月底對帳都頭痛</p></div></div>
+</div>
+</div>
+</section>
+<section id="features" class="py-20 px-6">
+<div class="max-w-4xl mx-auto">
+<h2 class="text-center text-3xl font-black text-white mb-12">完整功能一覽</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="card p-5"><div class="text-2xl mb-3">🌐</div><h3 class="font-bold text-white text-sm mb-1">專屬預約頁面</h3><p class="text-slate-500 text-xs">你的個人預約網站，可設定課程方案、時段、定價</p></div>
+<div class="card p-5"><div class="text-2xl mb-3">⚡</div><h3 class="font-bold text-white text-sm mb-1">防撞課機制</h3><p class="text-slate-500 text-xs">同一時段只能被預約一次，已被預約的自動顯示「已預約」</p></div>
+<div class="card p-5"><div class="text-2xl mb-3">💬</div><h3 class="font-bold text-white text-sm mb-1">學員自動回覆</h3><p class="text-slate-500 text-xs">確認後學員的 LINE 自動收到通知</p></div>
+<div class="card p-5"><div class="text-2xl mb-3">📅</div><h3 class="font-bold text-white text-sm mb-1">Google 行事曆同步</h3><p class="text-slate-500 text-xs">確認的預約自動加入 Google 行事曆，不怕忘課</p></div>
+<div class="card p-5"><div class="text-2xl mb-3">📈</div><h3 class="font-bold text-white text-sm mb-1">預約記錄儀表板</h3><p class="text-slate-500 text-xs">每月收入、熱門時段統計一目了然</p></div>
+<div class="card p-5"><div class="text-2xl mb-3">🔒</div><h3 class="font-bold text-white text-sm mb-1">資料安全</h3><p class="text-slate-500 text-xs">資料儲存在你自己的 Google 帳號，完全掌控</p></div>
+</div>
+</div>
+</section>
+<section id="pricing" class="py-20 px-6">
+<div class="max-w-3xl mx-auto text-center">
+<h2 class="text-3xl font-black text-white mb-12">簡單透明的收費</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="price-card p-8 text-left">
+<p class="text-xs font-bold text-slate-400 tracking-widest uppercase mb-3">一次性設定費</p>
+<div class="mb-6"><span class="text-5xl font-black text-white">NT$3,000</span></div>
+<ul class="space-y-3 text-sm text-slate-400">
+<li class="flex gap-2"><span class="text-green-400">✓</span>客製化教練個人預約頁面</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>LINE 通知系統串接設定</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>Google 試算表 &amp; 行事曆設定</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>上線前完整測試</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>教練使用教學（含影片）</li>
+</ul>
+</div>
+<div class="price-card highlight p-8 text-left glow relative">
+<span class="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold px-3 py-1 rounded-full bg-green-500 text-white">推薦</span>
+<p class="text-xs font-bold text-green-400 tracking-widest uppercase mb-3">每月訂閱維護</p>
+<div class="flex items-end gap-2 mb-6"><span class="text-5xl font-black text-white">NT$299</span><span class="text-slate-400 mb-2">/月</span></div>
+<ul class="space-y-3 text-sm text-slate-400">
+<li class="flex gap-2"><span class="text-green-400">✓</span>系統持續維護與更新</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>功能問題優先處理</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>課程方案 / 定價調整</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>LINE Token 異常即時修復</li>
+<li class="flex gap-2"><span class="text-green-400">✓</span>每月新功能優先體驗</li>
+</ul>
+<p class="text-xs text-slate-500 mt-4">等於每天 <strong class="text-green-400">不到 $10</strong>，省下的時間遠超過</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 px-6">
+<div class="max-w-3xl mx-auto text-center">
+<h2 class="text-2xl font-black text-white mb-10">教練怎麼說</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+<div class="card p-6 text-left"><p class="text-slate-300 text-sm mb-4">「以前每天要在 LINE 回好幾十則預約訊息，現在全部自動搞定，超省事。」</p><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-green-700 flex items-center justify-center text-sm font-bold text-white">龍</div><div><p class="text-white text-xs font-bold">龍澔 教練</p><p class="text-slate-600 text-xs">1 對 1 / 雙打教學</p></div></div></div>
+<div class="card p-6 text-left"><p class="text-slate-300 text-sm mb-4">「學員說預約超方便，確認後馬上收到 LINE 通知，專業感提升很多。」</p><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-cyan-700 flex items-center justify-center text-sm font-bold text-white">林</div><div><p class="text-white text-xs font-bold">林璟妤 教練</p><p class="text-slate-600 text-xs">羽球教學</p></div></div></div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 text-center">
+<div class="max-w-2xl mx-auto">
+<h2 class="text-4xl font-black text-white mb-4">讓你的課更好預約</h2>
+<p class="text-slate-400 mb-8">今天加入，下週就能上線</p>
+<a href="https://line.me/ti/p/~940810ttiimm" class="btn-primary inline-block text-white font-bold px-10 py-5 rounded-2xl text-lg">💬 LINE 我，免費諮詢</a>
+<p class="text-slate-600 text-xs mt-4">設定時間約 2–3 個工作天 · 隨時可取消訂閱</p>
+</div>
+</section>
+<footer class="border-t border-white/5 py-8 px-6 text-center text-slate-600 text-xs">🏸 龍羽球預約系統 &copy; 2026</footer>
+</body>
+</html>
