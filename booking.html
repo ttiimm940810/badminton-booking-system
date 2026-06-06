@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="page-title">龍哥羽球 | 線上預約</title>
+  <title>羽球預約 | 選擇教練</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -27,11 +27,27 @@
   <style>
     body { background-color: #F8F3EB; }
 
-    /* ── 卡片 ── */
     .card-warm {
       background: #FFFFFF;
       border: 1px solid #E8DFD0;
       box-shadow: 0 2px 12px rgba(90,65,40,.06);
+    }
+
+    /* ── 教練選擇卡片 ── */
+    .coach-select-card {
+      cursor: pointer;
+      transition: all .2s;
+      border: 2px solid #E8DFD0;
+      background: #FFFFFF;
+    }
+    .coach-select-card:hover {
+      border-color: #7fbfaa;
+      box-shadow: 0 4px 16px rgba(61,122,95,.12);
+    }
+    .coach-select-card.selected {
+      border-color: #3D7A5F;
+      background: #f0f7f3;
+      box-shadow: 0 4px 16px rgba(61,122,95,.18);
     }
 
     /* ── 時段按鈕 ── */
@@ -45,41 +61,32 @@
     .slot-btn:not(.selected):not(:disabled):hover { border-color: #3D7A5F; background: #f0f7f3; }
     .slot-btn:disabled { opacity:.35; cursor:not-allowed; }
 
-    /* ── 方案卡片 ── */
     .plan-card { cursor:pointer; transition:all .15s; }
     .plan-card.selected { border-color: #2d6065 !important; background: #f0f7f3 !important; box-shadow: 0 0 0 1px rgba(61,122,95,.2); }
 
-    /* ── 人數卡片 ── */
     .size-card { cursor:pointer; transition:all .15s; }
     .size-card.selected { border-color: #2d6065 !important; background: #f0f7f3 !important; }
 
-    /* ── 輸入框 ── */
     .form-input { transition: border-color .15s, box-shadow .15s; }
     .form-input:focus { outline: none; border-color: #2d6065; box-shadow: 0 0 0 3px rgba(61,122,95,.12); }
 
-    /* ── Modal ── */
     #modal-overlay { transition: opacity .2s; }
     #modal-box     { transition: transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s; }
     #modal-overlay.hidden { display: none; }
 
-    /* ── Date picker ── */
     input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(.3) sepia(.5) saturate(2) hue-rotate(100deg);
       cursor: pointer;
     }
 
-    /* ── Spinner ── */
     @keyframes spin { to { transform: rotate(360deg); } }
     .animate-spin { animation: spin 1s linear infinite; }
 
-    /* ── Badge pulse ── */
     @keyframes badge-pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
     .badge-pulse { animation: badge-pulse 2.2s ease-in-out infinite; }
 
-    /* ── Addon checkbox ── */
     .addon-check { accent-color: #2d6065; }
 
-    /* ── Section heading ── */
     .section-heading {
       font-family: 'Noto Serif TC', serif;
       font-size: .8rem;
@@ -94,8 +101,6 @@
       color: #8B7155;
       margin-bottom: .35rem;
     }
-
-    /* ── 裝飾線 ── */
     .step-number {
       display: inline-flex;
       align-items: center;
@@ -109,26 +114,49 @@
       flex-shrink: 0;
       margin-right: .5rem;
     }
+
+    /* ── 表單區塊淡入 ── */
+    #booking-form {
+      transition: opacity .3s;
+    }
+    #booking-form.hidden-form {
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="font-sans text-warm-600 min-h-screen">
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     ██  CONFIG — 只需修改此物件，即可快速客製化不同教練的預約頁面  ██
-     ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════
+     CONFIG
+     ═══════════════════════════════════════════ -->
 <script>
 const CONFIG = {
 
-  /* ── 教練個人資料 ── */
-  coach: {
-    name:        '龍哥',
-    lineUserId:        'Uf3192aae817110b52ca9b73b2f253e3a',  // 教練 LINE User ID
-    developerLineUserId: 'Uc1d06eefb380958f95c29db0a45e3365', // ← 填入你自己的 LINE User ID（目前先填同一個測試）
-    avatar:      'https://ui-avatars.com/api/?name=龍哥&background=3D7A5F&color=fff&size=160&bold=true',
-    title:       '龍羽球俱樂部 主教練',
-    bio:         '專注雙打戰術訓練，課程從入門到進階皆有開設，依學員程度量身規劃，一起在球場上享受羽球的樂趣。',
-    tags:        ['雙打戰術'],
-  },
+  /* ── 開發者 LINE User ID（收到所有教練的預約通知）── */
+  developerLineUserId: 'Uc1d06eefb380958f95c29db0a45e3365',
+
+  /* ── 教練清單 ── */
+  coaches: [
+    {
+      id:         'coach1',
+      name:       '龍澔',
+      lineUserId: 'Uf3192aae817110b52ca9b73b2f253e3a',
+      avatar:     'https://ui-avatars.com/api/?name=龍澔&background=3D7A5F&color=fff&size=160&bold=true',
+      title:      '龍羽球俱樂部 主教練',
+      bio:        '專注雙打戰術訓練，課程從入門到進階皆有開設，依學員程度量身規劃，一起在球場上享受羽球的樂趣。',
+      tags:       ['雙打戰術'],
+    },
+    {
+      id:         'coach2',
+      name:       '林璟妤',
+      lineUserId: 'U798bd6b445f3da0541348e2fbec909ad',
+      avatar:     'https://ui-avatars.com/api/?name=林璟妤&background=5B6FA6&color=fff&size=160&bold=true',
+      title:      '羽球教練',
+      bio:        '請填寫教練簡介。',
+      tags:       ['羽球教學'],
+    },
+  ],
 
   /* ── 課程人數選項 ── */
   groupSizes: [
@@ -179,7 +207,7 @@ const CONFIG = {
 
   /* ── 附加服務 ── */
   addons: [
-    { value:'球具訂購',        label:'球具訂購' },
+    { value:'球具訂購',           label:'球具訂購' },
     { value:'拉線服務 (BG65Ti)', label:'拉線 (BG65Ti) $320' },
   ],
 
@@ -194,7 +222,7 @@ const CONFIG = {
   apiUrl: 'https://script.google.com/macros/s/AKfycbx0uuC0ItCfx6NxxQCP_4xOSPibErTbGZCv4bB2pnnVjjEzuvyvx9k6nb9ygQoXOPPw/exec',
 
   /* ── 其他設定 ── */
-  secretKey:      'LongTing_940810',
+  secretKey:       'LongTing_940810',
   bookingLeadDays: 1,
   maxAdvanceDays:  31,
 };
@@ -209,15 +237,27 @@ const CONFIG = {
       </svg>
       <span class="font-serif text-sm font-semibold text-warm-600">羽球預約</span>
     </div>
-    <a href="#step-date"
+    <a href="#step-coach"
        class="text-xs font-semibold px-4 py-1.5 rounded-full bg-brand-500 hover:bg-brand-600 text-white transition-colors shadow-sm">
       立即預約
     </a>
   </div>
 </nav>
 
-<!-- ──── 教練品牌區 ──── -->
-<section class="pt-24 pb-8 px-4">
+<!-- ──── STEP 0：選擇教練 ──── -->
+<section id="step-coach" class="pt-24 pb-6 px-4 scroll-mt-16">
+  <div class="max-w-2xl mx-auto">
+    <div class="card-warm rounded-2xl p-6">
+      <h2 class="section-heading flex items-center mb-4">
+        <span class="step-number">0</span>選擇教練
+      </h2>
+      <div id="coach-select-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ──── 教練品牌區（選完才顯示）──── -->
+<section id="coach-profile" class="hidden pb-6 px-4">
   <div class="max-w-2xl mx-auto">
     <div class="card-warm rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row gap-5 items-center sm:items-start">
       <div class="relative flex-shrink-0">
@@ -236,7 +276,7 @@ const CONFIG = {
 </section>
 
 <!-- ──── 預約表單 ──── -->
-<main class="px-4 pb-16">
+<main id="booking-form" class="px-4 pb-16 hidden-form">
   <div class="max-w-2xl mx-auto space-y-4">
 
     <!-- STEP 1: 基本資訊 -->
@@ -275,8 +315,6 @@ const CONFIG = {
       <div class="mt-4 space-y-4">
         <input id="input-date" type="date"
                class="form-input w-full sm:w-auto bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600" />
-
-        <!-- 圖例 -->
         <div class="flex gap-4 text-[10px] text-warm-400">
           <span class="flex items-center gap-1.5">
             <span class="w-2.5 h-2.5 rounded bg-warm-100 border border-warm-300 inline-block"></span>日間場
@@ -285,7 +323,6 @@ const CONFIG = {
             <span class="w-2.5 h-2.5 rounded bg-night-100 border border-night-400/40 inline-block"></span>夜間場
           </span>
         </div>
-
         <div id="slots-grid" class="grid grid-cols-4 sm:grid-cols-7 gap-2"></div>
       </div>
     </div>
@@ -303,7 +340,6 @@ const CONFIG = {
     <div class="card-warm rounded-2xl p-6">
       <h2 class="section-heading flex items-center"><span class="step-number">5</span>球館 &amp; 附加服務</h2>
       <div class="mt-4 space-y-4">
-
         <div>
           <label class="field-label">練球地區 / 球館 <span class="text-red-400">*</span></label>
           <select id="input-venue"
@@ -311,18 +347,15 @@ const CONFIG = {
             <option value="" disabled selected>請選擇球館</option>
           </select>
         </div>
-
         <div id="venue-other-wrap" class="hidden">
           <label class="field-label">請輸入球館名稱</label>
           <input id="input-venue-other" type="text" placeholder="例如：文山羽球館"
                  class="form-input w-full bg-warm-50 border border-warm-200 rounded-xl px-4 py-2.5 text-sm text-warm-600 placeholder-warm-300" />
         </div>
-
         <div>
           <label class="field-label">附加服務（選填）</label>
           <div id="addons-grid" class="grid grid-cols-2 gap-2 mt-1"></div>
         </div>
-
         <div>
           <label class="field-label">備註（選填）</label>
           <textarea id="input-note" rows="2" placeholder="如有其他特殊需求請填寫..."
@@ -331,7 +364,6 @@ const CONFIG = {
       </div>
     </div>
 
-    <!-- 確認預約按鈕 -->
     <p class="text-[10px] text-warm-400 text-center">※ 最早可預約日期為隔天</p>
     <button id="btn-book"
             class="w-full py-4 rounded-2xl bg-brand-500 hover:bg-brand-600 active:scale-[.98] text-white font-bold text-sm transition-all shadow-lg shadow-brand-200">
@@ -342,13 +374,12 @@ const CONFIG = {
 </main>
 
 <!-- ════════════════════════════
-     MODAL — 付款確認
+     MODAL
      ════════════════════════════ -->
 <div id="modal-overlay"
      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
   <div id="modal-box"
        class="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-warm-200">
-
     <div class="flex items-center justify-between mb-5">
       <h3 class="font-serif text-base font-bold text-warm-600">預約確認</h3>
       <button id="modal-close" class="text-warm-300 hover:text-warm-500 transition-colors">
@@ -357,9 +388,8 @@ const CONFIG = {
         </svg>
       </button>
     </div>
-
-    <!-- 摘要 -->
     <div class="bg-warm-50 rounded-xl p-4 mb-4 space-y-2 text-sm border border-warm-200">
+      <div class="flex justify-between"><span class="text-warm-400">教練</span><span id="modal-coach" class="font-medium text-warm-600"></span></div>
       <div class="flex justify-between"><span class="text-warm-400">學員</span><span id="modal-name" class="font-medium text-warm-600"></span></div>
       <div class="flex justify-between"><span class="text-warm-400">人數</span><span id="modal-size" class="font-medium text-warm-600"></span></div>
       <div class="flex justify-between"><span class="text-warm-400">日期時段</span><span id="modal-datetime" class="font-medium text-warm-600 text-right max-w-[60%]"></span></div>
@@ -369,19 +399,15 @@ const CONFIG = {
         <span id="modal-price" class="text-brand-500 font-bold text-base"></span>
       </div>
     </div>
-
     <button id="btn-submit"
             class="w-full py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 active:scale-[.98] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm">
       <span id="btn-submit-text">送出預約</span>
     </button>
-
-    <!-- 成功 -->
     <div id="modal-success" class="hidden mt-5 text-center space-y-2">
       <div class="text-4xl">🏸</div>
       <p class="text-brand-500 font-bold font-serif">預約已送出！</p>
       <p class="text-xs text-warm-400">教練會盡快與您聯絡，感謝您的預約。</p>
     </div>
-
   </div>
 </div>
 
@@ -390,25 +416,75 @@ const CONFIG = {
      ════════════════════════ -->
 <script>
 /* ═══════════ 狀態 ═══════════ */
+let selectedCoach   = null;
 let selectedSize    = CONFIG.groupSizes[0].id;
 let selectedSlots   = [];
 let selectedPlanId  = CONFIG.plans[0].id;
 
-/* ═══════════ 教練資料渲染 ═══════════ */
-(function renderCoach() {
-  const c = CONFIG.coach;
-  document.getElementById('coach-avatar').src           = c.avatar;
-  document.getElementById('coach-name').textContent     = c.name;
-  document.getElementById('coach-title').textContent    = c.title;
-  document.getElementById('coach-bio').textContent      = c.bio;
+/* ═══════════ 教練選擇卡片渲染 ═══════════ */
+(function renderCoachSelection() {
+  const grid = document.getElementById('coach-select-grid');
+  CONFIG.coaches.forEach(coach => {
+    const card = document.createElement('div');
+    card.id        = `coach-card-${coach.id}`;
+    card.className = 'coach-select-card rounded-2xl p-4 flex items-center gap-4';
+    card.innerHTML = `
+      <img src="${coach.avatar}" alt="${coach.name}"
+           class="w-14 h-14 rounded-full object-cover ring-2 ring-warm-200 flex-shrink-0" />
+      <div class="flex-1 min-w-0">
+        <p class="font-serif font-bold text-warm-600 text-base">${coach.name}</p>
+        <p class="text-[11px] text-warm-400 truncate">${coach.title}</p>
+        <div class="flex flex-wrap gap-1 mt-1">
+          ${coach.tags.map(t => `<span class="text-[10px] px-2 py-0.5 rounded-full bg-brand-50 text-brand-500 border border-brand-200">${t}</span>`).join('')}
+        </div>
+      </div>
+      <svg class="w-5 h-5 text-brand-400 flex-shrink-0 opacity-0 transition-opacity" id="check-${coach.id}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+      </svg>
+    `;
+    card.addEventListener('click', () => selectCoach(coach));
+    grid.appendChild(card);
+  });
+})();
+
+function selectCoach(coach) {
+  selectedCoach = coach;
+
+  // 更新卡片樣式
+  CONFIG.coaches.forEach(c => {
+    const card  = document.getElementById(`coach-card-${c.id}`);
+    const check = document.getElementById(`check-${c.id}`);
+    const isSelected = c.id === coach.id;
+    card.classList.toggle('selected', isSelected);
+    check.style.opacity = isSelected ? '1' : '0';
+  });
+
+  // 更新教練資料區
+  document.getElementById('coach-avatar').src            = coach.avatar;
+  document.getElementById('coach-name').textContent      = coach.name;
+  document.getElementById('coach-title').textContent     = coach.title;
+  document.getElementById('coach-bio').textContent       = coach.bio;
   const tagsEl = document.getElementById('coach-tags');
-  c.tags.forEach(t => {
+  tagsEl.innerHTML = '';
+  coach.tags.forEach(t => {
     const s = document.createElement('span');
     s.className   = 'text-xs px-2.5 py-1 rounded-full bg-brand-50 text-brand-500 border border-brand-200 font-medium';
     s.textContent = t;
     tagsEl.appendChild(s);
   });
-})();
+
+  // 顯示教練資料區 & 表單
+  document.getElementById('coach-profile').classList.remove('hidden');
+  document.getElementById('booking-form').classList.remove('hidden-form');
+
+  // 捲動到表單
+  setTimeout(() => {
+    document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+
+  // 重新查詢時段
+  onDateChange();
+}
 
 /* ═══════════ 人數卡片 ═══════════ */
 (function renderSizes() {
@@ -444,7 +520,7 @@ function setSize(id) {
 
 /* ═══════════ 日期設定 ═══════════ */
 (function initDate() {
-  const inp  = document.getElementById('input-date');
+  const inp   = document.getElementById('input-date');
   const today = new Date();
   const min   = new Date(today);
   min.setDate(today.getDate() + CONFIG.bookingLeadDays);
@@ -455,7 +531,6 @@ function setSize(id) {
   inp.max   = fmt(max);
   inp.value = fmt(min);
   inp.addEventListener('change', onDateChange);
-  setTimeout(onDateChange, 500);
 })();
 
 /* ═══════════ 時段按鈕渲染 ═══════════ */
@@ -463,7 +538,7 @@ function setSize(id) {
   const grid = document.getElementById('slots-grid');
   CONFIG.slots.forEach(slot => {
     const btn = document.createElement('button');
-    btn.type      = 'button';
+    btn.type          = 'button';
     btn.dataset.value = slot.value;
     btn.dataset.fee   = slot.fee;
     btn.dataset.idx   = CONFIG.slots.indexOf(slot);
@@ -484,7 +559,6 @@ function renderSlotStates() {
 function toggleSlot(btn) {
   if (btn.disabled) return;
   const val = btn.dataset.value;
-  const idx = parseInt(btn.dataset.idx);
 
   if (selectedSize === '1on4') {
     if (selectedSlots.includes(val)) {
@@ -493,10 +567,7 @@ function toggleSlot(btn) {
       if (selectedSlots.length >= 2) selectedSlots = [];
       selectedSlots.push(val);
       if (selectedSlots.length === 2) {
-        const idxs = selectedSlots.map(v => {
-          const s = CONFIG.slots.find(s => s.value === v);
-          return CONFIG.slots.indexOf(s);
-        }).sort((a,b) => a-b);
+        const idxs = selectedSlots.map(v => CONFIG.slots.findIndex(s => s.value === v)).sort((a,b) => a-b);
         if (idxs[1] - idxs[0] !== 1) {
           alert('4 人團班時段必須連續！請重新選擇。');
           selectedSlots = [val];
@@ -514,7 +585,7 @@ function toggleSlot(btn) {
   updatePricing();
 }
 
-/* ═══════════ 日期變更：查詢已被預約時段 ═══════════ */
+/* ═══════════ 查詢已預約時段 ═══════════ */
 function onDateChange() {
   const date = document.getElementById('input-date').value;
   if (!date) return;
@@ -543,13 +614,13 @@ function onDateChange() {
     .catch(() => {});
 }
 
-/* ═══════════ 方案渲染 & 定價計算 ═══════════ */
+/* ═══════════ 方案渲染 & 定價 ═══════════ */
 (function renderPlans() {
   const list = document.getElementById('plans-list');
   CONFIG.plans.forEach(plan => {
     const div = document.createElement('div');
     div.id        = `plan-${plan.id}`;
-    div.className = `plan-card p-4 rounded-xl border-2 border-warm-200 bg-warm-50 flex justify-between items-center`;
+    div.className = 'plan-card p-4 rounded-xl border-2 border-warm-200 bg-warm-50 flex justify-between items-center';
     div.innerHTML = `
       <div>
         <p class="text-sm font-semibold text-warm-600">${plan.label}</p>
@@ -582,57 +653,45 @@ function updatePricing() {
     });
     return;
   }
-
-  const size  = selectedSize;
   const slots = selectedSlots.map(v => CONFIG.slots.find(s => s.value === v));
-
-  if (size === '1on4') {
+  if (selectedSize === '1on4') {
     const p = CONFIG.pricing['1on4'];
     document.getElementById('price-trial').textContent  = `$${p.trial} /人`;
     document.getElementById('price-single').textContent = `$${p.single} /人`;
     document.getElementById('price-ten').textContent    = `$${p.ten} /人`;
     return;
   }
-
-  if (size === '1on2') {
+  if (selectedSize === '1on2') {
     let trial=0, single=0, ten=0;
     slots.forEach(s => {
       const r = CONFIG.pricing['1on2'].byFee[s.fee];
-      trial  += r.trial;
-      single += r.single;
-      ten    += r.ten;
+      trial += r.trial; single += r.single; ten += r.ten;
     });
     document.getElementById('price-trial').textContent  = `$${trial} /人`;
     document.getElementById('price-single').textContent = `$${single} /人`;
     document.getElementById('price-ten').textContent    = `$${ten} /人`;
     return;
   }
-
-  const p   = CONFIG.pricing['1on1'];
-  const hrs = slots.length;
+  const p = CONFIG.pricing['1on1'];
   const venueTotal = slots.reduce((sum, s) => sum + s.fee, 0);
-  document.getElementById('price-trial').textContent  = `$${p.trial  * hrs + venueTotal} /人`;
-  document.getElementById('price-single').textContent = `$${p.single * hrs + venueTotal} /人`;
-  document.getElementById('price-ten').textContent    = `$${p.ten    * hrs + venueTotal * 10} /人`;
+  document.getElementById('price-trial').textContent  = `$${p.trial  * slots.length + venueTotal} /人`;
+  document.getElementById('price-single').textContent = `$${p.single * slots.length + venueTotal} /人`;
+  document.getElementById('price-ten').textContent    = `$${p.ten    * slots.length + venueTotal * 10} /人`;
 }
 
 /* ═══════════ 球館選單 ═══════════ */
 (function renderVenues() {
   const sel = document.getElementById('input-venue');
   CONFIG.venues.forEach(v => {
-    const opt  = document.createElement('option');
-    opt.value  = v;
-    opt.text   = v;
+    const opt = document.createElement('option');
+    opt.value = v; opt.text = v;
     sel.appendChild(opt);
   });
   const other = document.createElement('option');
-  other.value = '其他';
-  other.text  = '其他（請填寫）';
+  other.value = '其他'; other.text = '其他（請填寫）';
   sel.appendChild(other);
-
   sel.addEventListener('change', () => {
-    document.getElementById('venue-other-wrap')
-      .classList.toggle('hidden', sel.value !== '其他');
+    document.getElementById('venue-other-wrap').classList.toggle('hidden', sel.value !== '其他');
   });
 })();
 
@@ -656,28 +715,30 @@ document.getElementById('input-phone').addEventListener('input', function() {
     .classList.toggle('hidden', this.value.length === 0 || /^09\d{8}$/.test(this.value));
 });
 
-/* ═══════════ 確認預約 → 開 Modal ═══════════ */
+/* ═══════════ 確認預約 → Modal ═══════════ */
 document.getElementById('btn-book').addEventListener('click', () => {
+  if (!selectedCoach)                { alert('請先選擇教練');   return; }
   const name  = document.getElementById('input-name').value.trim();
   const phone = document.getElementById('input-phone').value.trim();
   const lineID= document.getElementById('input-line').value.trim();
   const date  = document.getElementById('input-date').value;
   const venue = document.getElementById('input-venue').value;
 
-  if (!name)                        { alert('請填寫姓名');   return; }
+  if (!name)                        { alert('請填寫姓名');         return; }
   if (!/^09\d{8}$/.test(phone))     { alert('請輸入正確手機號碼'); return; }
-  if (!lineID)                      { alert('請填寫 LINE ID'); return; }
-  if (!date)                        { alert('請選擇日期');   return; }
-  if (selectedSlots.length === 0)   { alert('請選擇時段');   return; }
+  if (!lineID)                      { alert('請填寫 LINE ID');     return; }
+  if (!date)                        { alert('請選擇日期');         return; }
+  if (selectedSlots.length === 0)   { alert('請選擇時段');         return; }
   if (selectedSize === '1on4' && selectedSlots.length !== 2) { alert('4 人團班請選連續 2 個時段'); return; }
-  if (!venue)                       { alert('請選擇球館');   return; }
+  if (!venue)                       { alert('請選擇球館');         return; }
   if (venue === '其他' && !document.getElementById('input-venue-other').value.trim()) {
     alert('請填寫球館名稱'); return;
   }
 
-  const planEl = document.getElementById(`price-${selectedPlanId}`);
+  const planEl    = document.getElementById(`price-${selectedPlanId}`);
   const priceText = planEl ? planEl.textContent : '--';
 
+  document.getElementById('modal-coach').textContent    = selectedCoach.name;
   document.getElementById('modal-name').textContent     = name;
   document.getElementById('modal-size').textContent     = CONFIG.groupSizes.find(s => s.id === selectedSize).label;
   document.getElementById('modal-datetime').textContent = `${date}　${selectedSlots.join('、')}`;
@@ -693,12 +754,8 @@ document.getElementById('btn-book').addEventListener('click', () => {
 });
 
 /* ═══════════ Modal 控制 ═══════════ */
-function openModal() {
-  document.getElementById('modal-overlay').classList.remove('hidden');
-}
-function closeModal() {
-  document.getElementById('modal-overlay').classList.add('hidden');
-}
+function openModal() { document.getElementById('modal-overlay').classList.remove('hidden'); }
+function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
@@ -712,23 +769,23 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   const planEl     = document.getElementById(`price-${selectedPlanId}`);
 
   const payload = {
-    name:             document.getElementById('input-name').value.trim(),
-    phone:            document.getElementById('input-phone').value.trim(),
-    lineID:           document.getElementById('input-line').value.trim(),
-    date:             document.getElementById('input-date').value,
-    timeSlot:         selectedSlots.join(', '),
-    groupSize:        selectedSize,
-    coursePlan:       CONFIG.plans.find(p => p.id === selectedPlanId).label.replace(/🔹 /,''),
-    pricePerPerson:   planEl ? planEl.textContent : '',
-    venue:            venueVal === '其他' ? venueOther : venueVal,
-    services:         addons,
-    note:             document.getElementById('input-note').value.trim(),
-    transferLast5:    '',
-    coachName:           CONFIG.coach.name,
-    coachLineUserId:     CONFIG.coach.lineUserId,
-    developerLineUserId: CONFIG.coach.developerLineUserId,
-    secret_key:       CONFIG.secretKey,
-    timestamp:        new Date().toISOString(),
+    name:                document.getElementById('input-name').value.trim(),
+    phone:               document.getElementById('input-phone').value.trim(),
+    lineID:              document.getElementById('input-line').value.trim(),
+    date:                document.getElementById('input-date').value,
+    timeSlot:            selectedSlots.join(', '),
+    groupSize:           selectedSize,
+    coursePlan:          CONFIG.plans.find(p => p.id === selectedPlanId).label.replace(/🔹 /,''),
+    pricePerPerson:      planEl ? planEl.textContent : '',
+    venue:               venueVal === '其他' ? venueOther : venueVal,
+    services:            addons,
+    note:                document.getElementById('input-note').value.trim(),
+    transferLast5:       '',
+    coachName:           selectedCoach.name,
+    coachLineUserId:     selectedCoach.lineUserId,
+    developerLineUserId: CONFIG.developerLineUserId,
+    secret_key:          CONFIG.secretKey,
+    timestamp:           new Date().toISOString(),
   };
 
   const btn     = document.getElementById('btn-submit');
